@@ -2,9 +2,14 @@ const { Client, Function: Fn, Call, Create, Collection } = require('faunadb');
 const { Artist } = require('../models/Artist');
 const db = new Client({secret: process.env.FAUNA_SECRET});
 
-module.exports.getArtistById = async (id) => {
+/**
+ * Fetches an Artist from FaunaDB by Spotify Id
+ * @param {String} spotifyId 
+ * @returns 
+ */
+module.exports.getArtistBySpotifyId = async (spotifyId) => {
   let doc = db.query(
-    Call(Fn("getArtistBySpotifyId"), id)
+    Call(Fn("getArtistBySpotifyId"), spotifyId)
   ).catch(printErrors);
 
   return doc;
@@ -19,7 +24,7 @@ module.exports.getArtistRefs = async (artists) => {
   let refs = [];
   for(let artist of artists) {
     let doc;
-    doc = await this.getArtistById(artist.id);
+    doc = await this.getArtistBySpotifyId(artist.id);
 
     if(!doc) {
       let newArtist = new Artist(
