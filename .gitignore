@@ -1,0 +1,4 @@
+.env
+.faunarc
+ISRCs.txt
+node_modules
